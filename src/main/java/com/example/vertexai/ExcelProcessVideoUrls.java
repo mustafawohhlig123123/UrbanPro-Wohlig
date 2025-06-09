@@ -19,7 +19,7 @@ public class ExcelProcessVideoUrls {
         try {
             fis = new FileInputStream(new File(filePath));
             workbook = new XSSFWorkbook(fis);
-            Sheet sheet = workbook.getSheetAt(1);
+            Sheet sheet = workbook.getSheetAt(0);
 
             // Get the header row
             Row headerRow = sheet.getRow(0);
@@ -98,6 +98,27 @@ public class ExcelProcessVideoUrls {
             fos = new FileOutputStream(new File(filePath));
             workbook.write(fos);
             System.out.println("Successfully appended data to new column.");
+
+            boolean hasEmptyStatus = false;
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+                if (row != null) {
+                    Cell statusCell = row.getCell(statusColIndex);
+                    if (statusCell == null || statusCell.getCellType() == CellType.BLANK || statusCell.toString().trim().isEmpty()) {
+                        hasEmptyStatus = true;
+                        break;
+                    }
+                }
+            }
+
+            if (hasEmptyStatus) {
+                System.out.println("Some rows have empty AI Status. Reprocessing...");
+                // Close before recursive call to release file handle
+                fos.close();
+                workbook.close();
+                test(vertexSvc);
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();
