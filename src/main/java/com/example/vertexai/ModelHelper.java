@@ -7,6 +7,9 @@ import com.google.cloud.vertexai.api.SafetySetting;
 import com.google.cloud.vertexai.api.SafetySetting.HarmBlockThreshold;
 import com.google.cloud.vertexai.generativeai.ContentMaker;
 import com.google.cloud.vertexai.generativeai.GenerativeModel;
+import com.google.cloud.vertexai.api.Schema;
+import com.google.cloud.vertexai.api.Type;
+
 
 import java.util.Arrays;
 
@@ -34,12 +37,31 @@ public class ModelHelper {
         .setCategory(HarmCategory.HARM_CATEGORY_HARASSMENT)
         .setThreshold(HarmBlockThreshold.BLOCK_NONE)
         .build();
+
+    Schema recipeSchema = Schema.newBuilder()
+        .setType(Type.OBJECT)
+        .putProperties("status", Schema.newBuilder()
+            .setType(Type.STRING)
+            .build())
+        .putProperties("violations", Schema.newBuilder()
+            .setType(Type.ARRAY)
+            .setItems(Schema.newBuilder()
+                .setType(Type.OBJECT)
+                .putProperties("timestamp", Schema.newBuilder().setType(Type.STRING).build())
+                .putProperties("violation_type", Schema.newBuilder().setType(Type.STRING).build())
+                .build())
+            .build())
+        .addRequired("status")
+        .build();
+    
         
     GenerationConfig config = GenerationConfig.newBuilder()
         .setMaxOutputTokens(50092)
         .setTemperature(0.0f)
         .setTopP(0.95f)
         .setSeed(0)
+        .setResponseMimeType("application/json")
+        .setResponseSchema(recipeSchema)
         .build();
 
     return new GenerativeModel.Builder()
