@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class ChunkingService {
     private static final int CHUNK_SEC = 900; // 15 minutes;
-    private final ExecutorService executor = Executors.newFixedThreadPool(3);
+    private final ExecutorService executor = Executors.newFixedThreadPool(2);
     
     public ChunkingService() {}
 
