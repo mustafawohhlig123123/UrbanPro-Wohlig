@@ -49,6 +49,7 @@ public class ModelHelper {
                 .setType(Type.OBJECT)
                 .putProperties("timestamp", Schema.newBuilder().setType(Type.STRING).build())
                 .putProperties("violation_type", Schema.newBuilder().setType(Type.STRING).build())
+                .putProperties("description", Schema.newBuilder().setType(Type.STRING).build())
                 .build())
             .build())
         .addRequired("status")

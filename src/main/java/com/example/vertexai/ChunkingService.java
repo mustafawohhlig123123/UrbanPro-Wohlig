@@ -1,6 +1,5 @@
 package com.example.vertexai;
 
-
 import com.google.cloud.vertexai.api.GenerateContentResponse;
 import org.apache.commons.io.IOUtils;
 
@@ -8,11 +7,12 @@ import java.io.*;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.stream.Collectors;
 
 public class ChunkingService {
     private static final int CHUNK_SEC = 900; // 15 minutes;
+
     private final ExecutorService executor = Executors.newFixedThreadPool(2);
+
     
     public ChunkingService() {}
 
@@ -44,40 +44,41 @@ public class ChunkingService {
         }
 
         executor.shutdown();
-
-        // aggregate violations
-        @SuppressWarnings("unchecked")
-        List<Map<String, Object>> allViolations = results.stream()
-                .filter(r -> "REJECTED".equals(r.get("status")))
-                .flatMap(r -> ((List<Map<String, Object>>) r.get("violations")).stream())
-                .collect(Collectors.toList());
-
-        Map<String, Object> finalResult = new HashMap<>();
-        if (allViolations.isEmpty()) {
-            finalResult.put("status", "APPROVED");
-            finalResult.put("violations", Collections.emptyList());
-            return finalResult;
-        } else {
-            finalResult.put("status", "REJECTED");
-            finalResult.put("violations", allViolations);
-        }
+        System.out.println("Results: " + results + ".");
         String system = PromptHelper.getFinalSysInstruction();
         String userInstr = PromptHelper.getFinalUserPrompt();
 
-        GenerateContentResponse finalResp = vertexSvc.postProcess(finalResult, system, userInstr);
+        GenerateContentResponse finalResp = vertexSvc.postProcess(results, system, userInstr);
+        
+        // aggregate violations
+        // @SuppressWarnings("unchecked")
+        // List<Map<String, Object>> allViolations = results.stream()
+        //         .filter(r -> "REJECTED".equals(r.get("status")))
+        //         .flatMap(r -> ((List<Map<String, Object>>) r.get("violations")).stream())
+        //         .collect(Collectors.toList());
+
+        // Map<String, Object> finalResult = new HashMap<>();
+        // if (allViolations.isEmpty()) {
+        //     finalResult.put("status", "APPROVED");
+        //     finalResult.put("violations", Collections.emptyList());
+        //     return finalResult;
+        // } else {
+        //     finalResult.put("status", "REJECTED");
+        //     finalResult.put("violations", allViolations);
+        // }
+
+        // GenerateContentResponse finalResp = vertexSvc.postProcess(finalResult, system, userInstr);
         
        
         return vertexSvc.formatResponse(finalResp);
     }
 
     private Map<String, Object> reviewSingle(byte[] chunkBytes, int chunkNumber, VertexAiService vertexSvc) throws Exception {
-        // String b64 = Base64.getEncoder().encodeToString(chunkBytes);
         System.out.println("Reviewing chunk " + chunkNumber);
-
         String system = PromptHelper.getSystemInstruction();
         String userInstr = PromptHelper.getUserInstruction(chunkNumber);
 
-        GenerateContentResponse resp = vertexSvc.generateContent(chunkBytes, system, userInstr);
+        GenerateContentResponse resp = vertexSvc.generateContent(chunkBytes, system, userInstr, chunkNumber);
         System.gc();
         return vertexSvc.formatResponse(resp);
     }
