@@ -33,7 +33,7 @@ public class ExcelProcessVideoUrls {
             int lastCol = headerRow.getLastCellNum();
             for (int i = 0; i < lastCol; i++) {
                 Cell cell = headerRow.getCell(i);
-                if (cell != null && "url".equalsIgnoreCase(cell.getStringCellValue().trim())) {
+                if (cell != null && "Video url".equalsIgnoreCase(cell.getStringCellValue().trim())) {
                     videoUrlCol = i;
                     break;
                 }
