@@ -22,11 +22,11 @@ public class App {
       try (VertexAI vertexAi = new VertexAI(PROJECT_ID, LOCATION)) {
 
       VertexAiService vertexSvc = new VertexAiService(vertexAi);
-      // LectureReviewService lectureSvc = new LectureReviewService();
-      ExcelProcessVideoUrls excelProcessVideoUrls = new ExcelProcessVideoUrls();
-      excelProcessVideoUrls.test(vertexSvc); // Assuming this method processes the Excel file and sets up the environment
-      // Map<String, Object> result = lectureSvc.reviewLecture(VIDEO_URI, vertexSvc);
-      // System.out.println("Final result: " + result);
+      LectureReviewService lectureSvc = new LectureReviewService();
+      // ExcelProcessVideoUrls excelProcessVideoUrls = new ExcelProcessVideoUrls();
+      // excelProcessVideoUrls.test(vertexSvc); // Assuming this method processes the Excel file and sets up the environment
+      Map<String, Object> result = lectureSvc.reviewLecture(VIDEO_URI, vertexSvc);
+      System.out.println("Final result: " + result);
     } catch (Exception e) {
       System.err.println("Error: " + e.getMessage());
       e.printStackTrace();
