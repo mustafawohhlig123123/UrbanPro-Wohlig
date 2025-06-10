@@ -91,6 +91,37 @@ public class ExcelProcessVideoUrls {
                         System.gc();
                     }
                 }
+
+                if (row == null) continue;
+
+                Cell existingStatus = row.getCell(statusColIndex);
+                if (existingStatus != null &&
+                    existingStatus.getCellType() != CellType.BLANK &&
+                    !existingStatus.toString().trim().isEmpty()) {
+                    // Already processed
+                    continue;
+                }
+
+                Cell urlCell = row.getCell(videoUrlCol);
+                if (urlCell == null) continue;
+                String url = urlCell.toString();
+                System.out.println("Processing URL: " + i + " --- " + url);
+
+                LectureReviewService lectureSvc = new LectureReviewService();
+                Map<String, Object> result = lectureSvc.reviewLecture(url, vertexSvc);
+                System.out.println("Violations: " + result);
+
+                String statusValue = "";
+                if (result.get("status") != null) {
+                    statusValue = result.get("status").toString();
+                }
+                Cell statusCell = row.createCell(statusColIndex);
+                statusCell.setCellValue(statusValue);
+
+                Cell resultCell = row.createCell(resultColIndex);
+                resultCell.setCellValue(result.toString());
+
+                System.gc();
             }
 
             // Write back to file
@@ -98,26 +129,6 @@ public class ExcelProcessVideoUrls {
             fos = new FileOutputStream(new File(filePath));
             workbook.write(fos);
             System.out.println("Successfully appended data to new column.");
-
-            boolean hasEmptyStatus = false;
-            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
-                Row row = sheet.getRow(i);
-                if (row != null) {
-                    Cell statusCell = row.getCell(statusColIndex);
-                    if (statusCell == null || statusCell.getCellType() == CellType.BLANK || statusCell.toString().trim().isEmpty()) {
-                        hasEmptyStatus = true;
-                        break;
-                    }
-                }
-            }
-
-            if (hasEmptyStatus) {
-                System.out.println("Some rows have empty AI Status. Reprocessing...");
-                // Close before recursive call to release file handle
-                fos.close();
-                workbook.close();
-                test(vertexSvc);
-            }
 
 
         } catch (Exception e) {
