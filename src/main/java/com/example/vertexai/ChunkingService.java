@@ -10,7 +10,9 @@ import java.util.concurrent.*;
 
 public class ChunkingService {
     private static final int CHUNK_SEC = 900; // 15 minutes;
-    private final ExecutorService executor = Executors.newFixedThreadPool(4);
+
+    private final ExecutorService executor = Executors.newFixedThreadPool(2);
+
     
     public ChunkingService() {}
 
