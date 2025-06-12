@@ -48,7 +48,7 @@ public class PromptHelper {
         "  - Clearly inappropriate or offensive language (vulgar, obscene, or harassing).\n" +
         "  - Abusive or threatening behavior.\n" +
         "  - Clothing or actions that are obviously not suitable for a child-friendly learning (e.g., overtly sexual or violent imagery, explicit gestures).\n" +
-        "  - Student touching private parts of the body, including the genitals, genitals, or genitals.  \n" +
+        "  - Student touching private parts of the body, including the genitals, anus, or vagina.  \n" +
         "- **Background distractions (e.g., a child visible/kids playing), non-educational system audio (e.g., automated phone prompts, black screen with unrelated sounds), discussions of pricing/rates (e.g., “300 rupees per hour”), offering to write emails for emergencies, or using Hindi examples in an English class are NOT violations. Promotional mentions or fee structures are allowed.**\n" +
         "\n" +
         "5. USE_OF_ABUSIVE_LANGUAGE\n" +
