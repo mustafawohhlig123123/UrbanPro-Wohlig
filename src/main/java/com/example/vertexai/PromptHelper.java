@@ -48,6 +48,7 @@ public class PromptHelper {
         "  - Clearly inappropriate or offensive language (vulgar, obscene, or harassing).\n" +
         "  - Abusive or threatening behavior.\n" +
         "  - Clothing or actions that are obviously not suitable for a child-friendly learning (e.g., overtly sexual or violent imagery, explicit gestures).\n" +
+        "  - Student touching private parts of the body, including the genitals, genitals, or genitals.  \n" +
         "- **Background distractions (e.g., a child visible/kids playing), non-educational system audio (e.g., automated phone prompts, black screen with unrelated sounds), discussions of pricing/rates (e.g., “300 rupees per hour”), offering to write emails for emergencies, or using Hindi examples in an English class are NOT violations. Promotional mentions or fee structures are allowed.**\n" +
         "\n" +
         "5. USE_OF_ABUSIVE_LANGUAGE\n" +
@@ -76,18 +77,18 @@ public class PromptHelper {
         "ASSIGNMENT EXTRACTION RULES:\n" +
             "Create `Assignments` object\n\n" +
             "For `assignments_given_by_the_teacher`, STRICTLY INCLUDE ONLY:\n" +
-            "✅ Homework assignments explicitly stated for after-class completion\n" +
-            "✅ Quizzes or tests announced for future specific dates\n" +
-            "✅ Follow-up actions or preparations for subsequent sessions\n" +
-            "✅ Reading assignments or practice exercises to do at home\n" +
-            "✅ Project work assigned for completion outside class\n\n" +
-            "❌ STRICTLY DO NOT INCLUDE:\n" +
+            "Homework assignments explicitly stated for after-class completion\n" +
+            " Quizzes or tests announced for future specific dates\n" +
+            " Follow-up actions or preparations for subsequent sessions\n" +
+            " Reading assignments or practice exercises to do at home\n" +
+            "Project work assigned for completion outside class\n\n" +
+            " STRICTLY DO NOT INCLUDE:\n" +
             "• Any activities happening during the live class session\n" +
             "• In-class exercises, vocabulary drills, grammar practice\n" +
             "• Self-introductions, questions, or discussions within the class\n" +
             "• General study advice unless explicitly assigned as homework\n" +
             "• Encouragements or motivational statements\n\n" +
-            "📝 ASSIGNMENT FORMATTING:\n" +
+            " ASSIGNMENT FORMATTING:\n" +
             "• If specific assignments found: List them clearly and concisely\n" +
             "• If no assignments: \"No specific homework or after-class assignments were given.\"\n" +
             "• Use professional educational language\n" +

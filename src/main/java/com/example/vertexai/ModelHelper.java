@@ -132,6 +132,7 @@ public class ModelHelper {
                     .setType(Type.STRING)
                     .build())
                 .putProperties("summary", Schema.newBuilder()
+                .setDescription("Parent-friendly summary of what was taught in this chunk")
                     .setType(Type.STRING)
                     .build())
                 .putProperties("assignments", Schema.newBuilder()
