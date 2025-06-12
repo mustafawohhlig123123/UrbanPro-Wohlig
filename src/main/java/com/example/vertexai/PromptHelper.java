@@ -33,7 +33,7 @@ public class PromptHelper {
         "\n" +
         "3. LINK_IS_SHARED\n" +
         "- Only consider a violation if the **link** is explicitly meant to enable direct contact or off-platform communication.\n" +
-        "- A complete or explicit URL, social media handle, or UPI ID is said, shown, written, or shared.\n" +
+        "- A complete or explicit URL, social media handle including game ids, PERSONAL institute name for example: Conquest the skill development, book name, QR code or UPI ID is said, shown, written, or shared.\n" +
         "- Formats include:\n" +
         "  - https://example.com\n" +
         "  - www.instagram.com/username\n" +
@@ -75,24 +75,24 @@ public class PromptHelper {
         "- Important: To get the full-video timestamp, add an offset of %d minutes (i.e., (chunkNumber - 1) * 15) to the minute (mm) portion of each mm:ss timestamp in this chunk. For example, if chunkNumber=2 and the chunk timestamp is 02:15, the full-video timestamp is 17:15.\n" +
         "\n" +
         "ASSIGNMENT EXTRACTION RULES:\n" +
-            "Create `Assignments` object\n\n" +
-            "For `assignments_given_by_the_teacher`, STRICTLY INCLUDE ONLY:\n" +
-            "Homework assignments explicitly stated for after-class completion\n" +
-            " Quizzes or tests announced for future specific dates\n" +
-            " Follow-up actions or preparations for subsequent sessions\n" +
-            " Reading assignments or practice exercises to do at home\n" +
-            "Project work assigned for completion outside class\n\n" +
+            " - Create `Assignments` object\n\n" +
+            " -  For `assignments_given_by_the_teacher`, STRICTLY INCLUDE ONLY:\n" +
+            " - Homework assignments explicitly stated for after-class completion\n" +
+            " - Quizzes or tests announced for future specific dates\n" +
+            " - Follow-up actions or preparations for subsequent sessions\n" +
+            " - Reading assignments or practice exercises to do at home\n" +
+            "- Project work assigned for completion outside class\n\n" +
             " STRICTLY DO NOT INCLUDE:\n" +
-            "• Any activities happening during the live class session\n" +
-            "• In-class exercises, vocabulary drills, grammar practice\n" +
-            "• Self-introductions, questions, or discussions within the class\n" +
-            "• General study advice unless explicitly assigned as homework\n" +
-            "• Encouragements or motivational statements\n\n" +
+            " - Any activities happening during the live class session\n" +
+            " - In-class exercises, vocabulary drills, grammar practice\n" +
+            " - Self-introductions, questions, or discussions within the class\n" +
+            " - General study advice unless explicitly assigned as homework\n" +
+            " - Encouragements or motivational statements\n\n" +
             " ASSIGNMENT FORMATTING:\n" +
-            "• If specific assignments found: List them clearly and concisely\n" +
-            "• If no assignments: \"No specific homework or after-class assignments were given.\"\n" +
-            "• Use professional educational language\n" +
-            "• Be specific about what students need to do and when\n" +
+            " - If specific assignments found: List them clearly and concisely\n" +
+            " - If no assignments: \"No specific homework or after-class assignments were given.\"\n" +
+            " - Use professional educational language\n" +
+            " - Be specific about what students need to do and when\n" +
             "\n" +
 
         "STRICTLY FOLLOW THE OUTPUT FORMAT:\n" +
