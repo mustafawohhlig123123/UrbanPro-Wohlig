@@ -14,7 +14,7 @@ public class PromptHelper {
         "ONLY mark the video as REJECTED if **specific and clear violations** occur as listed below:\n" +
         "\n" +
         "1. EMAIL_IS_SHARED\n" +
-        "- An actual email address is spoken, shown on screen, written in chat, or included in any attachment.\n" +
+        "- An actual email address is spoken, shown on screen even if the email is visible partially on the screen in a browser tab with the mail logo, written in chat, or included in any attachment.\n" +
         "- Email formats include:\n" +
         "  - example@gmail.com\n" +
         "  - name.lastname@domain.co.in\n" +
@@ -28,12 +28,12 @@ public class PromptHelper {
         "  - +91-9876543210\n" +
         "  - (022) 23456789\n" +
         "  - 091-9876543210\n" +
-        "  - Any explicit 10-digit sequence or formatted number that could be used to contact directly is spoken, shown, written, or attached.\n" +
+        "  - - If a 10-digit number or formatted contact detail (e.g., phone number) is spoken by a person, shown on screen, written, or included in attachments, flag it as a violation.\n" +
         "- **Phrases like “I have a virtual number, call me anytime” or “enter your registered number” without giving actual digits are NOT violations.**\n" +
         "\n" +
         "3. LINK_IS_SHARED\n" +
         "- Only consider a violation if the **link** is explicitly meant to enable direct contact or off-platform communication.\n" +
-        "- A complete or explicit URL, social media handle, or UPI ID is said, shown, written, or shared.\n" +
+        "- A complete or explicit URL, social media handle including game ids, PERSONAL institute name for example: Conquest the skill development, book name, QR code or UPI ID is said, shown, written, or shared.\n" +
         "- Formats include:\n" +
         "  - https://example.com\n" +
         "  - www.instagram.com/username\n" +
@@ -46,8 +46,10 @@ public class PromptHelper {
         "4. UNPROFESSIONAL_CONDUCT\n" +
         "- Only includes:\n" +
         "  - Clearly inappropriate or offensive language (vulgar, obscene, or harassing).\n" +
+        " - if the student or teacher uses animated filters or characters in the video, flag it as a potential violation.\n" +
         "  - Abusive or threatening behavior.\n" +
-        "  - Clothing or actions that are obviously not suitable for a child-friendly learning (e.g., overtly sexual or violent imagery, explicit gestures).\n" +
+        "  - Clothing or actions that are obviously not suitable for a child-friendly learning (e.g., overtly sexual or violent imagery or clothing, explicit gestures).\n" +
+        "  - Student touching private parts of the body, including the genitals or puts hands in their pants .  \n" +
         "- **Background distractions (e.g., a child visible/kids playing), non-educational system audio (e.g., automated phone prompts, black screen with unrelated sounds), discussions of pricing/rates (e.g., “300 rupees per hour”), offering to write emails for emergencies, or using Hindi examples in an English class are NOT violations. Promotional mentions or fee structures are allowed.**\n" +
         "\n" +
         "5. USE_OF_ABUSIVE_LANGUAGE\n" +
@@ -73,10 +75,32 @@ public class PromptHelper {
         "- Important: This is chunk number %d. Each chunk represents 15 minutes of the full video.\n" +
         "- Important: To get the full-video timestamp, add an offset of %d minutes (i.e., (chunkNumber - 1) * 15) to the minute (mm) portion of each mm:ss timestamp in this chunk. For example, if chunkNumber=2 and the chunk timestamp is 02:15, the full-video timestamp is 17:15.\n" +
         "\n" +
+        "ASSIGNMENT EXTRACTION RULES:\n" +
+            " - Create `Assignments` object\n\n" +
+            " -  For `assignments_given_by_the_teacher`, STRICTLY INCLUDE ONLY:\n" +
+            " - Homework assignments explicitly stated for after-class completion\n" +
+            " - Quizzes or tests announced for future specific dates\n" +
+            " - Follow-up actions or preparations for subsequent sessions\n" +
+            " - Reading assignments or practice exercises to do at home\n" +
+            "- Project work assigned for completion outside class\n\n" +
+            " STRICTLY DO NOT INCLUDE:\n" +
+            " - Any activities happening during the live class session\n" +
+            " - In-class exercises, vocabulary drills, grammar practice\n" +
+            " - Self-introductions, questions, or discussions within the class\n" +
+            " - General study advice unless explicitly assigned as homework\n" +
+            " - Encouragements or motivational statements\n\n" +
+            " ASSIGNMENT FORMATTING:\n" +
+            " - If specific assignments found: List them clearly and concisely\n" +
+            " - If no assignments: \"No specific homework or after-class assignments were given.\"\n" +
+            " - Use professional educational language\n" +
+            " - Be specific about what students need to do and when\n" +
+            "\n" +
+
         "STRICTLY FOLLOW THE OUTPUT FORMAT:\n" +
         "{\n" +
         "  \"status\": \"APPROVED\" | \"REJECTED\",\n" +
         "  \"summary\": \"<one-sentence, parent-friendly summary of what was taught in this chunk>\",\n" +
+        "  \"assignments\": \"assignments_given_by_the_teacher\": \",\"\n" +
         "  \"violations\": [\n" +
         "    {\n" +
         "      \"violation_type\": \"EMAIL_IS_SHARED\",\n" +
@@ -131,6 +155,8 @@ public class PromptHelper {
            "    {\n" +
            "    \"status\": \"REJECTED\",\n" +
            "    \"summary\": \"<combined parent-friendly summary of what was taught in the full video>\",\n" +
+           "    \"assignments\":\"<assignments_given_by_the_teacher in Number of lines>\": \"...\" ,\n" +
+
            "    \"violations\": [\n" +
            "        {\n" +
            "        \"violation_type\": \"USE_OF_ABUSIVE_LANGUAGE\" | \"UNPROFESSIONAL_CONDUCT\" | \"EMAIL_IS_SHARED\" | \"NUMBER_IS_SHARED\" | \"LINK_IS_SHARED\",\n" +
