@@ -72,13 +72,11 @@ public class PromptHelper {
         "- GIVE in mm:ss format (seconds remain unchanged).\n" +
         "- Important: This is chunk number %d. Each chunk represents 15 minutes of the full video.\n" +
         "- Important: To get the full-video timestamp, add an offset of %d minutes (i.e., (chunkNumber - 1) * 15) to the minute (mm) portion of each mm:ss timestamp in this chunk. For example, if chunkNumber=2 and the chunk timestamp is 02:15, the full-video timestamp is 17:15.\n" +
-        "‼️ **VERY IMPORTANT:** Do **NOT** include any Russian characters or letters in the `violations` array. "
-      + "Any entry containing Cyrillic script will be considered invalid and must be removed before submission."+
         "\n" +
-        "OUTPUT FORMAT:\n" +
-        "Return ONLY clean JSON with:\n" +
+        "STRICTLY FOLLOW THE OUTPUT FORMAT:\n" +
         "{\n" +
         "  \"status\": \"APPROVED\" | \"REJECTED\",\n" +
+        "  \"summary\": \"<one-sentence, parent-friendly summary of what was taught in this chunk>\",\n" +
         "  \"violations\": [\n" +
         "    {\n" +
         "      \"violation_type\": \"EMAIL_IS_SHARED\",\n" +
@@ -93,7 +91,9 @@ public class PromptHelper {
         "  ]\n" +
         "}\n" +
         "\n" +
-        "NO markdown. NO pretext. NO triple backticks. Use standard double quotes only. ONLY return JSON.",
+        "IMPORTANT:\n" +
+        "   - **Your entire response must be valid JSON**—start with “{” and end with “}”, without ANY extra characters, whitespace, or commentary. Nothing else is allowed\n" +
+        "   - NO markdown. NO pretext. NO triple backticks. Use standard double quotes only. ONLY return JSON.",
         chunkNumber, offsetMinutes
     );
   }
@@ -120,14 +120,17 @@ public class PromptHelper {
            "    - If **any chunk** is \"REJECTED\" and contains violations\n" +
            "    - Merge all violations from all chunks into one array (no duplicates based on description).\n" +
            "    - Aggregating same violation based on description into a single entry with a start timestamp\n" +
+           "    - Combine all chunk \"summary\" fields into a single coherent \"summary\" paragraph that describes what the student learned across the entire video.\n" + //
            "    Return only a clean JSON response with no pretext, no explanation, no markdown, and no formatting outside the JSON.\n" +
-           "    IMPORTANT:\n" +
+           "IMPORTANT:\n" +
            "    - CONVERT timestamp from \"mm:ss\" to \"hh:mm:ss\".\n\n" +
-           "    OUTPUT FORMAT:\n" +
-           "    Return ONLY clean JSON with:\n" +
+           "    - Sanitize input JSON by removing any non-JSON characters and junk:\n" +
+           "OUTPUT FORMAT:\n" +
+           "Return ONLY clean JSON with:\n" +
            "    \n" +
            "    {\n" +
            "    \"status\": \"REJECTED\",\n" +
+           "    \"summary\": \"<combined parent-friendly summary of what was taught in the full video>\",\n" +
            "    \"violations\": [\n" +
            "        {\n" +
            "        \"violation_type\": \"USE_OF_ABUSIVE_LANGUAGE\" | \"UNPROFESSIONAL_CONDUCT\" | \"EMAIL_IS_SHARED\" | \"NUMBER_IS_SHARED\" | \"LINK_IS_SHARED\",\n" +
@@ -136,8 +139,14 @@ public class PromptHelper {
            "        }\n" +
            "    ]\n" +
            "    }\n" +
-           "    NO markdown. NO pretext. NO triple backticks. Use standard double quotes only. ONLY return JSON." +
-           "    Now process the following chunk results:";
+           "If all chunks are \"APPROVED\", return \"APPROVED\" with empty violations array." +
+           "    \n" +
+           "    {\n" +
+           "    \"status\": \"APPROVED\",\n" +
+           "    \"violations\": []\n" +
+           "    }\n" +
+           "IMPORTANT: **DO not inject any JUNK into the response.** NO markdown. NO pretext. NO triple backticks. No Use standard double quotes only. ONLY return JSON.\n" +
+           "Now process the following chunk results:\n\n";
 }
 
 }
