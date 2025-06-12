@@ -14,7 +14,7 @@ public class PromptHelper {
         "ONLY mark the video as REJECTED if **specific and clear violations** occur as listed below:\n" +
         "\n" +
         "1. EMAIL_IS_SHARED\n" +
-        "- An actual email address is spoken, shown on screen, written in chat, or included in any attachment.\n" +
+        "- An actual email address is spoken, shown on screen even if the email is visible partially on the screen in a browser tab with the mail logo, written in chat, or included in any attachment.\n" +
         "- Email formats include:\n" +
         "  - example@gmail.com\n" +
         "  - name.lastname@domain.co.in\n" +
@@ -28,7 +28,7 @@ public class PromptHelper {
         "  - +91-9876543210\n" +
         "  - (022) 23456789\n" +
         "  - 091-9876543210\n" +
-        "  - Any explicit 10-digit sequence or formatted number that could be used to contact directly is spoken, shown, written, or attached.\n" +
+        "  - - If a 10-digit number or formatted contact detail (e.g., phone number) is spoken by a person, shown on screen, written, or included in attachments, flag it as a violation.\n" +
         "- **Phrases like “I have a virtual number, call me anytime” or “enter your registered number” without giving actual digits are NOT violations.**\n" +
         "\n" +
         "3. LINK_IS_SHARED\n" +
@@ -46,9 +46,10 @@ public class PromptHelper {
         "4. UNPROFESSIONAL_CONDUCT\n" +
         "- Only includes:\n" +
         "  - Clearly inappropriate or offensive language (vulgar, obscene, or harassing).\n" +
+        " - if the student or teacher uses animated filters or characters in the video, flag it as a potential violation.\n" +
         "  - Abusive or threatening behavior.\n" +
-        "  - Clothing or actions that are obviously not suitable for a child-friendly learning (e.g., overtly sexual or violent imagery, explicit gestures).\n" +
-        "  - Student touching private parts of the body, including the genitals, anus, or vagina.  \n" +
+        "  - Clothing or actions that are obviously not suitable for a child-friendly learning (e.g., overtly sexual or violent imagery or clothing, explicit gestures).\n" +
+        "  - Student touching private parts of the body, including the genitals or puts hands in their pants .  \n" +
         "- **Background distractions (e.g., a child visible/kids playing), non-educational system audio (e.g., automated phone prompts, black screen with unrelated sounds), discussions of pricing/rates (e.g., “300 rupees per hour”), offering to write emails for emergencies, or using Hindi examples in an English class are NOT violations. Promotional mentions or fee structures are allowed.**\n" +
         "\n" +
         "5. USE_OF_ABUSIVE_LANGUAGE\n" +
