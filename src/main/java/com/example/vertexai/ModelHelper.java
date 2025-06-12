@@ -1,7 +1,6 @@
 package com.example.vertexai;
 
 import java.util.Arrays;
-
 import com.google.cloud.vertexai.VertexAI;
 import com.google.cloud.vertexai.api.GenerationConfig;
 import com.google.cloud.vertexai.api.HarmCategory;
@@ -16,7 +15,7 @@ public class ModelHelper {
 
     public static GenerativeModel buildModel(VertexAI vertexAi, String systemInstruction) {
         try {
-            // Define safety settings - allowing all content for moderation purposes
+            // Define safety settings
             SafetySetting hateSpeech = SafetySetting.newBuilder()
                 .setCategory(HarmCategory.HARM_CATEGORY_HATE_SPEECH)
                 .setThreshold(HarmBlockThreshold.BLOCK_NONE)
@@ -37,7 +36,7 @@ public class ModelHelper {
                 .setThreshold(HarmBlockThreshold.BLOCK_NONE)
                 .build();
 
-            // Define response schema for structured output
+            // Define violation schema
             Schema violationSchema = Schema.newBuilder()
                 .setType(Type.OBJECT)
                 .putProperties("violation_type", Schema.newBuilder()
@@ -57,6 +56,7 @@ public class ModelHelper {
                 .addRequired("description")
                 .build();
 
+            // Full response schema with assignments
             Schema responseSchema = Schema.newBuilder()
                 .setType(Type.OBJECT)
                 .putProperties("status", Schema.newBuilder()
@@ -67,6 +67,10 @@ public class ModelHelper {
                     .setType(Type.STRING)
                     .setDescription("Parent-friendly summary of what was taught in this chunk")
                     .build())
+                .putProperties("assignments", Schema.newBuilder()
+                    .setType(Type.STRING)
+                    .setDescription("Assignments given by the teacher for after-class completion")
+                    .build())
                 .putProperties("violations", Schema.newBuilder()
                     .setType(Type.ARRAY)
                     .setItems(violationSchema)
@@ -74,13 +78,13 @@ public class ModelHelper {
                     .build())
                 .addRequired("status")
                 .addRequired("summary")
+                .addRequired("assignments")
                 .addRequired("violations")
                 .build();
 
-            // Generation configuration
             GenerationConfig config = GenerationConfig.newBuilder()
-                .setMaxOutputTokens(8192)  // Reduced from 50092 to prevent issues
-                .setTemperature(0.1f)      // Slightly increased for more natural responses
+                .setMaxOutputTokens(8192)
+                .setTemperature(0.1f)
                 .setTopP(0.95f)
                 .setTopK(40)
                 .setResponseMimeType("application/json")
@@ -88,7 +92,7 @@ public class ModelHelper {
                 .build();
 
             return new GenerativeModel.Builder()
-                .setModelName("gemini-2.5-pro-preview-05-06")  // Using stable model
+                .setModelName("gemini-2.5-pro-preview-05-06")
                 .setVertexAi(vertexAi)
                 .setSystemInstruction(ContentMaker.fromString(systemInstruction))
                 .setGenerationConfig(config)
@@ -104,7 +108,7 @@ public class ModelHelper {
 
     public static GenerativeModel buildFinalModel(VertexAI vertexAi, String systemInstruction) {
         try {
-            // Simpler schema for final processing
+            // Simpler final schema
             Schema finalViolationSchema = Schema.newBuilder()
                 .setType(Type.OBJECT)
                 .putProperties("violation_type", Schema.newBuilder()
@@ -129,7 +133,9 @@ public class ModelHelper {
                     .build())
                 .putProperties("summary", Schema.newBuilder()
                     .setType(Type.STRING)
-                    .setDescription("Parent-friendly summary of what was taught in this chunk")
+                    .build())
+                .putProperties("assignments", Schema.newBuilder()
+                    .setType(Type.STRING)
                     .build())
                 .putProperties("violations", Schema.newBuilder()
                     .setType(Type.ARRAY)
@@ -137,6 +143,7 @@ public class ModelHelper {
                     .build())
                 .addRequired("status")
                 .addRequired("summary")
+                .addRequired("assignments")
                 .addRequired("violations")
                 .build();
 

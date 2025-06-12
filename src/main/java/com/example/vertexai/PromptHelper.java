@@ -73,10 +73,32 @@ public class PromptHelper {
         "- Important: This is chunk number %d. Each chunk represents 15 minutes of the full video.\n" +
         "- Important: To get the full-video timestamp, add an offset of %d minutes (i.e., (chunkNumber - 1) * 15) to the minute (mm) portion of each mm:ss timestamp in this chunk. For example, if chunkNumber=2 and the chunk timestamp is 02:15, the full-video timestamp is 17:15.\n" +
         "\n" +
+        "ASSIGNMENT EXTRACTION RULES:\n" +
+            "Create `Assignments` object\n\n" +
+            "For `assignments_given_by_the_teacher`, STRICTLY INCLUDE ONLY:\n" +
+            "✅ Homework assignments explicitly stated for after-class completion\n" +
+            "✅ Quizzes or tests announced for future specific dates\n" +
+            "✅ Follow-up actions or preparations for subsequent sessions\n" +
+            "✅ Reading assignments or practice exercises to do at home\n" +
+            "✅ Project work assigned for completion outside class\n\n" +
+            "❌ STRICTLY DO NOT INCLUDE:\n" +
+            "• Any activities happening during the live class session\n" +
+            "• In-class exercises, vocabulary drills, grammar practice\n" +
+            "• Self-introductions, questions, or discussions within the class\n" +
+            "• General study advice unless explicitly assigned as homework\n" +
+            "• Encouragements or motivational statements\n\n" +
+            "📝 ASSIGNMENT FORMATTING:\n" +
+            "• If specific assignments found: List them clearly and concisely\n" +
+            "• If no assignments: \"No specific homework or after-class assignments were given.\"\n" +
+            "• Use professional educational language\n" +
+            "• Be specific about what students need to do and when\n" +
+            "\n" +
+
         "STRICTLY FOLLOW THE OUTPUT FORMAT:\n" +
         "{\n" +
         "  \"status\": \"APPROVED\" | \"REJECTED\",\n" +
         "  \"summary\": \"<one-sentence, parent-friendly summary of what was taught in this chunk>\",\n" +
+        "  \"assignments\": \"assignments_given_by_the_teacher\": \",\"\n" +
         "  \"violations\": [\n" +
         "    {\n" +
         "      \"violation_type\": \"EMAIL_IS_SHARED\",\n" +
@@ -131,6 +153,8 @@ public class PromptHelper {
            "    {\n" +
            "    \"status\": \"REJECTED\",\n" +
            "    \"summary\": \"<combined parent-friendly summary of what was taught in the full video>\",\n" +
+           "    \"assignments\":\"<assignments_given_by_the_teacher in Number of lines>\": \"...\" ,\n" +
+
            "    \"violations\": [\n" +
            "        {\n" +
            "        \"violation_type\": \"USE_OF_ABUSIVE_LANGUAGE\" | \"UNPROFESSIONAL_CONDUCT\" | \"EMAIL_IS_SHARED\" | \"NUMBER_IS_SHARED\" | \"LINK_IS_SHARED\",\n" +
