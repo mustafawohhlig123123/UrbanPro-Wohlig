@@ -63,12 +63,17 @@ public class ModelHelper {
                     .setType(Type.STRING)
                     .setDescription("APPROVED or REJECTED")
                     .build())
+                .putProperties("summary", Schema.newBuilder()
+                    .setType(Type.STRING)
+                    .setDescription("Parent-friendly summary of what was taught in this chunk")
+                    .build())
                 .putProperties("violations", Schema.newBuilder()
                     .setType(Type.ARRAY)
                     .setItems(violationSchema)
                     .setDescription("Array of violations found")
                     .build())
                 .addRequired("status")
+                .addRequired("summary")
                 .addRequired("violations")
                 .build();
 
@@ -83,7 +88,7 @@ public class ModelHelper {
                 .build();
 
             return new GenerativeModel.Builder()
-                .setModelName("gemini-2.0-flash-exp")  // Using stable model
+                .setModelName("gemini-2.5-pro-preview-05-06")  // Using stable model
                 .setVertexAi(vertexAi)
                 .setSystemInstruction(ContentMaker.fromString(systemInstruction))
                 .setGenerationConfig(config)
@@ -122,16 +127,21 @@ public class ModelHelper {
                 .putProperties("status", Schema.newBuilder()
                     .setType(Type.STRING)
                     .build())
+                .putProperties("summary", Schema.newBuilder()
+                    .setType(Type.STRING)
+                    .setDescription("Parent-friendly summary of what was taught in this chunk")
+                    .build())
                 .putProperties("violations", Schema.newBuilder()
                     .setType(Type.ARRAY)
                     .setItems(finalViolationSchema)
                     .build())
                 .addRequired("status")
+                .addRequired("summary")
                 .addRequired("violations")
                 .build();
 
             GenerationConfig config = GenerationConfig.newBuilder()
-                .setMaxOutputTokens(4096)
+                .setMaxOutputTokens(8192)
                 .setTemperature(0.0f)
                 .setTopP(0.95f)
                 .setResponseMimeType("application/json")
@@ -139,7 +149,7 @@ public class ModelHelper {
                 .build();
 
             return new GenerativeModel.Builder()
-                .setModelName("gemini-2.0-flash-exp")
+                .setModelName("gemini-2.0-flash-001")
                 .setVertexAi(vertexAi)
                 .setSystemInstruction(ContentMaker.fromString(systemInstruction))
                 .setGenerationConfig(config)
