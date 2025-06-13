@@ -59,7 +59,7 @@ public class PromptHelper {
         "\n" +
         "IMPORTANT:\n" +
         "- DO NOT mark as REJECTED for:\n" +
-        "  - Normal background noise, presence (e.g., child walking by),\n" +
+        "  - Normal background noise, presence (e.g., child walking by), phone call (e.g., teacher talking on phone),\n" +
         "  - Automated system prompts, black screens with unrelated audio,\n" +
         "  - Generic mentions of pricing, fees, or payment processes,\n" +
         "  - Offers to assist with tasks (e.g., “I can help you write emails”),\n" +

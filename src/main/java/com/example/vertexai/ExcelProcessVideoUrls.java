@@ -19,7 +19,7 @@ public class ExcelProcessVideoUrls {
         try {
             fis = new FileInputStream(new File(filePath));
             workbook = new XSSFWorkbook(fis);
-            Sheet sheet = workbook.getSheetAt(5);
+            Sheet sheet = workbook.getSheetAt(4);
 
             // Get the header row
             Row headerRow = sheet.getRow(0);
@@ -33,7 +33,7 @@ public class ExcelProcessVideoUrls {
             int lastCol = headerRow.getLastCellNum();
             for (int i = 0; i < lastCol; i++) {
                 Cell cell = headerRow.getCell(i);
-                if (cell != null && "Video url".equalsIgnoreCase(cell.getStringCellValue().trim())) {
+                if (cell != null && "url".equalsIgnoreCase(cell.getStringCellValue().trim())) {
                     videoUrlCol = i;
                     break;
                 }
